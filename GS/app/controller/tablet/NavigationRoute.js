@@ -98,7 +98,7 @@ Ext.define('GS.controller.tablet.NavigationRoute', {
             // var store = Ext.getStore('FeedDetail');
             // store.setData(data.entries);
             var data = record.getEntries();
-            // debugger;
+            debugger;
 
             var rightContainer = this.getRightContainer();
             var items = rightContainer.getItems();

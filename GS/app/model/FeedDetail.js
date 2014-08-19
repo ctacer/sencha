@@ -10,7 +10,6 @@ Ext.define('GS.model.FeedDetail', {
       foreignKey: 'id',
       associationKey: 'entries',
       autoLoad: true,
-      /*storeName: 'Entries'*/
       store: {
         autoLoad: true,
         model: 'GS.model.Entry',
@@ -33,18 +32,18 @@ Ext.define('GS.model.FeedDetail', {
   },
 
   saveFeed: function () {
-    debugger;
     this.entries().sync();
     this.save();
-    debugger;
   },
 
   getEntries: function () {
     debugger;
     var referenceId = this.get('id');
     debugger;
-    
-    return this.entries()
+
+    var entries = this.entries().getData().items;
+
+    return Array.prototype.slice.call(entries, 0)
       .filter(function (record) {
         return record.get('referenceId') == referenceId;
       })

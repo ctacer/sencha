@@ -20,16 +20,6 @@ Ext.define('GS.model.Entry', {
       type: 'uuid'
     },
 
-    idProperty: 'entry_id',
-
-    /*proxy: {
-      type: 'localstorage',
-      sourceStore: 'GS.proxy.WebStorageProxy',
-      id: 'feed-entries'
-    },*/
-
-    unwrap: function () {
-      return this.data;
-    }
+    idProperty: 'entry_id'
   }
 });

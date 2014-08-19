@@ -10,36 +10,11 @@
 
     config: {
       autoLoad: true,
-      autoSync: true,
+      /*autoSync: true,*/
       
       model: 'GS.model.FeedDetail',
       sorters: 'title'
-
-      /*listeners: {
-        load: function (store, records, successful, operation, eOpts) {
-          if (records && records.length) {
-            records.forEach(function (record) {
-              record.bind();
-            });
-          }
-          else {
-            console.log(records);
-            store.add(defaultStore);
-            store.each(function (record) {
-              record.save();
-            });
-            store.sync();
-          }
-        },
-        addrecords: function (store, records, eOpts) {
-          debugger;
-          if (records && records.length) {
-            records.forEach(function (record) {
-              record.bind();
-            });
-          }
-        }
-      }*/
+      
     },
 
     save: function () {
