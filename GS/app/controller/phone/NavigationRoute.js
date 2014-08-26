@@ -45,18 +45,17 @@ Ext.define('GS.controller.phone.NavigationRoute', {
         }); 
     },
 
-    showFeed: function (record) {
-        // record.getFeedDetails(function (data) {
-        //     var store = Ext.getStore('FeedDetail');
-        //     store.setData(data.entries);
-            
-            this.getMain().push({
-                xtype: 'feeddetail',
-                title: record.data.title
-            });
+    showFeed: function (record) {        
+        var data = record.getEntries();
+        var container = {
+            xtype: 'feeddetail',
+            title: record.data.title
+        };
+        if (data) {
+            container.data = data;
+        }
 
-        // }.bind(this));
+        this.getMain().push(container);
     }
-
 
 });

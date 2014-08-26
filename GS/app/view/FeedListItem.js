@@ -8,19 +8,10 @@ Ext.define('GS.view.FeedListItem', {
     ],
  
     config: {
-        button: {            
-            iconCls: 'refresh',
-            iconMask: true,
-            cls: 'visible'
-        },
 
         cls: 'feed-list-item',
 
-        dataMap: {
-            getButton: {
-                
-            },
-            
+        dataMap: {            
             getTitle: {
                 setHtml: 'title'
             }
@@ -36,20 +27,6 @@ Ext.define('GS.view.FeedListItem', {
             align: 'center'
         }
 
-    },
-
-    applyButton: function(config) {
-        return Ext.factory(config, Ext.Button, this.getButton());
-    },
-
-    updateButton: function(newButton, oldButton) {
-        if (newButton) {
-            this.add(newButton);
-        }
-
-        if (oldButton) {
-            this.remove(oldButton);
-        }
     },
 
     applyTitle: function (config) {

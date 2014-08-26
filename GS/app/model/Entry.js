@@ -21,5 +21,9 @@ Ext.define('GS.model.Entry', {
     },
 
     idProperty: 'entry_id'
+  },
+
+  getIdValue: function () {
+    return this.get('entry_id');
   }
 });

@@ -14,12 +14,12 @@ Ext.define('GS.controller.Main', {
     },
 
     showNewsDetails: function (list, record, element, index, event) {
-        this.redirect('feed/' + record.data.referenceId + '/entry/' + record.data.id);
+        this.redirect('feed/' + record.get('referenceId') + '/entry/' + record.get('entry_id'));
         event.stopPropagation();
     },
 
     tapNewsDetails: function (list, index, element, record, event) {
-        this.redirect('feed/' + record.data.referenceId + '/entry/' + record.data.id);
+        this.redirect('feed/' + record.get('referenceId') + '/entry/' + record.get('entry_id'));
         event.stopPropagation();
     }
 

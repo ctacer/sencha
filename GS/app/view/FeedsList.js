@@ -1,19 +1,19 @@
 Ext.define('GS.view.FeedsList', {
-  extend: 'Ext.dataview.DataView',
+  extend: 'Ext.List',
   xtype: 'feedslist',
 
   requires: [
-    'GS.store.Feeds',
-    'GS.view.FeedListItem'
+    'GS.store.Feeds'
   ],
 
   config: {
-    useComponents: true,
-    defaultType: 'feedlistitemview',
+    itemTpl: "{title}",
     store: 'Feeds',
     
     scrollable: true,
-    styleHtmlContent: true
+    styleHtmlContent: true,
+    onItemDisclosure: true,
+    disableSelection: true
 
   }
 })

@@ -4,7 +4,8 @@ Ext.define('GS.controller.tablet.FeedsList', {
     
     config: {
         refs: { 
-            main: 'mainpanel'
+            main: 'mainpanel',
+            mask: 'tablet-right-container'
         },
 
         control: {

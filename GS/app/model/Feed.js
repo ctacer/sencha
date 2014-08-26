@@ -1,20 +1,30 @@
-
 Ext.define('GS.model.Feed', {
   extend: 'Ext.data.Model',
 
   requires: [
-    'Ext.data.proxy.LocalStorage',
     'GS.proxy.WebStorageProxy'
   ],
 
   config: {
-    
-    fields: [
-     { name: 'id', type: 'int' },
-     { name: 'title', type: 'string' },
-     { name: 'link', type: 'string' },
-     { name: 'ref', type: 'obj' }
-    ],
+    fields: ['id', 'title', 'feedUrl', 'link', 'description', 'author', 'type', 'originalLink'],
+    hasMany: {
+      model: 'GS.model.Entry',
+      name: 'entries',
+      primaryKey: 'referenceId',
+      foreignKey: 'id',
+      associationKey: 'entries',
+      autoLoad: true,
+      store: {
+        autoLoad: true,
+        model: 'GS.model.Entry',
+        storeId: 'EntryStore',
+        proxy: {
+          type: 'localstorage',
+          sourceStore: 'GS.proxy.WebStorageProxy',
+          id: 'entries'
+        }
+      }
+    },
 
     idProperty: 'id',
 
@@ -25,51 +35,77 @@ Ext.define('GS.model.Feed', {
     }
   },
 
-  bind: function () {
-    this;
-    debugger;
+  /**
+   * function returns id of feed model
+   */
+  getIdValue: function () {
+    return this.get('id');
   },
 
-  loadFeedDetails: function (callback) {
+  /**
+   * function saves a feed an also save relative entries
+   */
+  saveFeed: function () {
+    this.entries().sync();
+    this.save();
+  },
 
-    var self = this;
-    self.data.id = parseInt(self.data.id);
+  /**
+   * function removes all entries related to current feed, and feed itself
+   */
+  removeFeed: function () {
+    var entries = this.getNativeEntries();
+    var store = this.entries();
 
-    var injectReference = function (obj) {
+    this.erase();
 
-      obj.id = self.data.id;
-      obj.entries = obj.entries.map(function (item, index) {
-        item.id = index;
-        item.referenceId = self.data.id;
-        return item;
+    Array.prototype.slice.call(entries, 0)
+      .forEach(function (entry) {
+        store.remove(entry);
       });
 
-      var ref = new GS.model.FeedDetail(obj);
-      ref.setEntries(obj.entries);
-      ref.save();
-      ref.getEntries();
-      self.data.ref = ref;
-      debugger;
-      return obj;
-    };
+    store.sync();
 
-    $.ajax({
-      url: document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent(this.data.link),
-      dataType: 'json',
-      success: function(data) {        
-        callback(data && data.responseData && data.responseData.feed ? injectReference(data.responseData.feed) : []);
-      }
-    });
-
+    this.destroy();
   },
 
-  fromModels: function (modelsArr) {
-    return modelsArr.map(function (model) { return model.unwrap(); });
+  /**
+   * function returns all entries related to current feed as array of sencha models
+   */
+  getNativeEntries: function () {
+    var referenceId = this.get('id');
+    var entries = this.entries().getData().items;
+
+    return Array.prototype.slice.call(entries, 0)
+      .filter(function (record) {
+        return record.get('referenceId') == referenceId;
+      });
   },
 
-  getNewList: function () {
-    debugger;
-    return this.data.ref ? this.data.ref.getEntries() : null;    
+  /**
+   * function returns entry by its id
+   */
+  getEntryById: function (id) {
+    var entries = this.getNativeEntries();
+
+    return Array.prototype.slice.call(entries, 0)
+      .reduce(function (result, record) {
+        if (record.getIdValue() == id) return record;
+        return result;
+      }, null);
+  },
+
+  /**
+   * function returns entries array (in data format, not sencha's model format)
+   */
+  getEntries: function () {
+    var entries = this.getNativeEntries();
+
+    return Array.prototype.slice.call(entries, 0)
+      .map(function (record, index) {
+        record.data.id = index;
+        return record.data;
+      });
   }
 
 });

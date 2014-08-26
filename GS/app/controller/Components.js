@@ -1,6 +1,6 @@
 
 Ext.define('GS.controller.Components', {
-    extend: 'Ext.app.Controller',
+    extend: 'GS.controller.Route',
 
     requires: [
         'Ext.form.Panel',
@@ -19,49 +19,46 @@ Ext.define('GS.controller.Components', {
         
         event.stopPropagation();
 
-        var popup = Ext.create('Ext.Panel', {
-            modal : true,
-            xtype: 'addrsspanel',
-            centered : true,
-            width : '80%',
-            height : 400,
-            layout : 'fit',
-            hideOnMaskTap: true,
+        Ext.Msg.prompt(
+            'Add Feed',
+            null,
+            function (buttonId, value) {
+                if (buttonId == "ok") {
+                    Ext.getStore('Feeds').createFeed(value);
+                }
+            },
+            null,
+            false,
+            null,
+            { autoCapitalize : true, placeHolder : 'Valid Feed url please...' }
+        );        
+    },
 
-            items : [{
-                docked : 'top',
-                xtype : 'toolbar',
-                title : 'Add RSS Item'
-            }, {
-                xtype : 'formpanel',
-                items : [{
-                    xtype : 'textfield',
-                    name : 'title',
-                    label : 'rss title'
-                },{
-                    xtype : 'textfield',
-                    name : 'link',
-                    label : 'rss source(url)'
-                },{
-                    xtype : 'button',
-                    text : 'Submit',
-                    style: "margin-top: 20px;",
-                    handler: function () {
-                      var data = this.up('formpanel').getValues();
-                      var store = Ext.getStore('Feeds');
-                      // data.id = store.createId();
-                      store.createFeed(data);
-                      // store.add(data);
-                      // store.save();
-                      popup.hide();
-                    }
-                }]
-            }],
-            scrollable : false
-        });
-        Ext.Viewport.add(popup);
+    refreshFeeds: function (button, event, eOpts) {
+        this.getMask().setMasked({ xtype: 'loadmask' });
+        Ext.getStore('Feeds').refreshAll(function () {
+            this.getMask().setMasked(false);
+            console.log('done');
+        }.bind(this));
+    },
 
-        popup.show();
+    refreshFeed: function () {
+        var record = {};
+        var container = this.getContainer();
+        if (!container) return;
+
+        var data = container.getData();
+        if (!data || !data.length) return;
+
+        var referenceId = data[0].referenceId;
+        var record = Ext.getStore('Feeds').getFeedById(referenceId);
+        if (!record) return;
+
+        this.getMask().setMasked({ xtype: 'loadmask' });
+        Ext.getStore('Feeds').refreshFeed(record, function () {
+            this.redirect('feed/' + record.data.id);
+            this.getMask().setMasked(false);
+        }.bind(this));
     }
 
 });

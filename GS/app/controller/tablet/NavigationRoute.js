@@ -77,12 +77,17 @@ Ext.define('GS.controller.tablet.NavigationRoute', {
         var rightContainer = this.getRightContainer();
 
         var items = leftContainer.getItems();
+        var data = feedRecord.getEntries();
         
         if (items.length == 2) {
             leftContainer.push({
                 xtype: 'feeddetail',
+                data: data,
                 title: feedRecord.data.title
             });
+            var details = leftContainer.query('feeddetail')[0];
+            /*debugger;
+            details.setActiveItem(1);*/
         }        
 
         rightContainer.push({
@@ -94,40 +99,35 @@ Ext.define('GS.controller.tablet.NavigationRoute', {
     },
 
     showFeed: function (record) {
-        // record.getFeedDetails(function (data) {
-            // var store = Ext.getStore('FeedDetail');
-            // store.setData(data.entries);
-            var data = record.getEntries();
-            debugger;
+        var data = record.getEntries();
 
-            var rightContainer = this.getRightContainer();
-            var items = rightContainer.getItems();
+        var rightContainer = this.getRightContainer();
+        var items = rightContainer.getItems();
 
-            var feedView = {
-                xtype: 'feeddetail',
-                styleHtmlContent: true
-            };
-            if (data) {
-                feedView.data = data;
-            }
+        var feedView = {
+            xtype: 'feeddetail',
+            styleHtmlContent: true
+        };
+        if (data) {
+            feedView.data = data;
+        }
 
-            if (items.length < 10) {
-                rightContainer.push(feedView);
-            }
-            else {
-                rightContainer.setItems([feedView]);
-            }
+        if (items.length < 10) {
+            rightContainer.push(feedView);
+        }
+        else {
+            rightContainer.setItems([feedView]);
+        }
 
-            var leftContainer = this.getLeftContainer();
-            items = leftContainer.getItems();
+        var leftContainer = this.getLeftContainer();
+        items = leftContainer.getItems();
 
-            if (items.length > 2) {
-                leftContainer.pop();
-                this.setTitle('left', 'Feeds');
-            }
+        if (items.length > 2) {
+            leftContainer.pop();
+            this.setTitle('left', 'Feeds');
+        }
 
-            this.setTitle('right', record.data.title);
-        // }.bind(this));
+        this.setTitle('right', record.data.title);
     },
 
     backHistory: function () {

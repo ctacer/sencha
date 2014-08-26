@@ -1,32 +1,53 @@
-Ext.define("GS.view.tablet.RightContainer", {
-  extend: 'Ext.navigation.View',
-  xtype: 'tablet-right-container',
 
-  config: {
 
-    id: 'tablet-right-container',
+!function () {
 
-    items: [ ],
-    listeners: { 
-      activate: function(self) { 
-        var navBar = Ext.ComponentQuery.query('tablet-right-container')[0].getNavigationBar();
+  var refreshFeedButton = {
+    xtype: 'button',
+    text: 'Refresh feeds',
+    name: 'refresh-feed',
+    align: 'right',
+    cls: 'visible'
+  };
 
-        var btns = navBar.query('button');
-        btns[0].hide();
-        btns[0].destroy();
+  var destroyButton = function (button) {
+    var buttonObj = Ext.ComponentQuery.query('tablet-right-container button[name="' + button.name + '"]')[0];
+    buttonObj && buttonObj.destroy();
+  };
 
-        navBar.add({
-            xtype: 'button',
-            text: 'Add',
-            name: 'add',
-            align: 'right'
-        });
-      },
-      deactivate: function (self) {
-        var addButton = Ext.ComponentQuery.query('tablet-right-container button[name=add]')[0];
-        addButton.destroy();
+  Ext.define("GS.view.tablet.RightContainer", {
+    extend: 'Ext.navigation.View',
+    xtype: 'tablet-right-container',
+
+    config: {
+
+      id: 'tablet-right-container',
+
+      items: [ ],
+      listeners: {
+        activate: function () {
+          var navBar = Ext.ComponentQuery.query('tablet-right-container')[0].getNavigationBar();
+
+          var btns = navBar.query('button');
+          btns[0].destroy();
+        },
+        activeitemchange: function (navView, value, oldValue, eOpts ) {
+          var navBar = Ext.ComponentQuery.query('#tablet-right-container')[0].getNavigationBar();
+
+          if (value.config.xtype == 'feeddetail') {
+            destroyButton(refreshFeedButton);
+            navBar.add(refreshFeedButton);
+          }
+          else if (value.config.xtype == 'newsdetails') {
+            destroyButton(refreshFeedButton);
+          }
+          else {
+            destroyButton(refreshFeedButton);
+          }
+        }
       }
     }
-  }
 
-});
+  });
+
+} ();

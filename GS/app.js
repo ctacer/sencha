@@ -10,7 +10,7 @@ Ext.application({
     controllers: ['Route', 'NavigationRoute', 'Main', 'FeedsList', 'Components'],
     views: ['FeedsList', 'NewsDetails', 'FeedListItem'],
     stores: ['Feeds'],
-    models: ['Entry', 'Feed', 'FeedDetail'],
+    models: ['Entry', 'Feed'],
 
     icon: {
         '57': 'resources/icons/Icon.png',

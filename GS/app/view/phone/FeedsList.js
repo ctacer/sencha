@@ -11,16 +11,27 @@ Ext.define('GS.view.phone.FeedsList', {
     title: 'Feeds', 
     listeners: { 
       activate: function(self) { 
-        Ext.ComponentQuery.query('phone-mainpanel')[0].getNavigationBar().add({
+        var navBar = Ext.ComponentQuery.query('phone-mainpanel')[0].getNavigationBar();
+
+        navBar.add({
+            xtype: 'button',
+            text: 'Refresh all feeds',
+            name: 'refresh-feeds',
+            align: 'right'
+        });
+
+        navBar.add({
             xtype: 'button',
             text: 'Add',
-            name: 'add',
+            name: 'add-button',
             align: 'right'
         });
       },
       deactivate: function (self) {
-        var addButton = Ext.ComponentQuery.query('phone-mainpanel button[name=add]')[0];
+        var addButton = Ext.ComponentQuery.query('phone-mainpanel button[name="add-button"]')[0];
+        var refreshButton = Ext.ComponentQuery.query('phone-mainpanel button[name="refresh-feeds"]')[0];
         addButton.destroy();
+        refreshButton.destroy();
       }
     }
 

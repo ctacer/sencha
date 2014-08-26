@@ -1,22 +1,9 @@
 Ext.define('GS.controller.NavigationRoute', {
     extend: 'GS.controller.Route',
     
-    config: {
-        refs: {
-        },
-
-        routes: {            
-        },
-
-        control: {
-        }
-    },
+    config: { },
 
     showHomePage: function () {
-        
-        // Ext.getStore('FeedDetail').removeAll();
-        // Ext.getStore('FeedDetail').setData([]);
-
         this.saveHistory('');
     },
 
@@ -38,12 +25,10 @@ Ext.define('GS.controller.NavigationRoute', {
     showNewsDetailsById: function (id, entryId, success) {
         success = success || function () {};
 
-        var detailStore = Ext.getStore('FeedDetail');
-        var detailRecord = detailStore.getById(entryId);
-
         var feedStore = Ext.getStore('Feeds');
         var feedRecord = feedStore.getById(id);
 
+        var detailRecord = feedRecord ? feedRecord.getEntryById(entryId) : null;
 
         if (detailRecord && detailRecord.data.referenceId == id) {
             success.call(this, detailRecord, feedRecord);

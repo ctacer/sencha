@@ -3,23 +3,22 @@ Ext.define('GS.view.FeedDetail', {
   xtype: 'feeddetail',
 
   requires: [
-    'GS.store.FeedDetail',
     'Ext.plugin.ListPaging'
   ],
 
   config: {
     styleHtmlContent: true,
 
-      // store: 'FeedDetail',
-      scrollable: true,
-      onItemDisclosure: true,
-      plugins: [
-        {
-          xclass: 'Ext.plugin.ListPaging',
-          autoPaging: true
-        }
-      ],
-      itemTpl: '{title}'
+    scrollable: true,
+    onItemDisclosure: true,
+    plugins: [
+      {
+        xclass: 'Ext.plugin.ListPaging',
+        autoPaging: true
+      }
+    ],
+    disableSelection: true,
+    itemTpl: '{title}'
 
   }
 
