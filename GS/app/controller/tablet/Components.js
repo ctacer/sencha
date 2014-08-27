@@ -23,6 +23,14 @@ Ext.define('GS.controller.tablet.Components', {
                 tap: 'refreshFeed'
             }
         }
+    },
+
+    refreshFeed: function () {
+        var procceedMethod = function (record, entries, container) {
+            this.redirect('feed/' + record.data.id);
+        }.bind(this);
+
+        this.superclass.refreshFeed.call(this, procceedMethod);
     }
 
 });

@@ -45,7 +45,7 @@ Ext.define('GS.controller.phone.NavigationRoute', {
         }); 
     },
 
-    showFeed: function (record) {        
+    showFeed: function (record) {
         var data = record.getEntries();
         var container = {
             xtype: 'feeddetail',

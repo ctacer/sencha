@@ -160,7 +160,7 @@
         var model = self.getNewModel(obj, id);
         self.add(model);
         self.save();
-        callback();
+        callback(model, model.getEntries());
       };
       
       this.loadFeedData(feed.data.originalLink, dataLoaded);
@@ -173,13 +173,19 @@
         data.push(model);
       });
 
-      async.each(data, this.refreshFeed.bind(this), function (error, result) {
-        if (error) {
-          console.error(error);
-          return;
+      async.each(data, 
+        function (feed, cb) {
+          this.refreshFeed(feed, function () { cb(); });
+        }.bind(this), 
+
+        function (error, result) {
+          if (error) {
+            console.error(error);
+            return;
+          }
+          callback && callback();
         }
-        callback && callback();
-      });
+      );
     }
 
   });

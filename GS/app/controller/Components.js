@@ -42,7 +42,9 @@ Ext.define('GS.controller.Components', {
         }.bind(this));
     },
 
-    refreshFeed: function () {
+    refreshFeed: function (procceedMethod) {
+        procceedMethod = procceedMethod || function () {};
+
         var record = {};
         var container = this.getContainer();
         if (!container) return;
@@ -55,9 +57,9 @@ Ext.define('GS.controller.Components', {
         if (!record) return;
 
         this.getMask().setMasked({ xtype: 'loadmask' });
-        Ext.getStore('Feeds').refreshFeed(record, function () {
-            this.redirect('feed/' + record.data.id);
+        Ext.getStore('Feeds').refreshFeed(record, function (refreshedRecord, entries) {            
             this.getMask().setMasked(false);
+            procceedMethod(refreshedRecord, entries, container);
         }.bind(this));
     }
 

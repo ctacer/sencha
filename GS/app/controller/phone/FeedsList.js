@@ -4,8 +4,8 @@ Ext.define('GS.controller.phone.FeedsList', {
     
     config: {
         refs: { 
-            main: 'mainpanel',
-            mask: 'mainpanel'
+            main: 'phone-mainpanel',
+            mask: 'phone-mainpanel'
         },
 
         control: {

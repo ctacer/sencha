@@ -7,7 +7,18 @@ Ext.define('GS.controller.Route', {
         control: { }
     },
 
+    getHistory: function () {
+        return this.getApplication().getHistory().getActions();
+    },
+
     saveHistory: function (url) {
+        var history = this.getHistory();
+        if (history.length == 1 && history[0]._url == url && url != '') {
+            var actions = this.getApplication().getHistory().getActions();
+            actions.pop();
+            this.saveHistory('');
+        }
+
         this.getApplication().getHistory().add(new Ext.app.Action({ url: url }), true);
     },
 
