@@ -25,8 +25,7 @@
     xtype: 'phone-feedslist',
 
     requires: [
-      'GS.store.Feeds',
-      'GS.view.FeedListItem'
+      'GS.store.Feeds'
     ],
 
     config: {

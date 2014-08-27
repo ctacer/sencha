@@ -8,7 +8,7 @@ Ext.application({
     ],
 
     controllers: ['Route', 'NavigationRoute', 'Main', 'FeedsList', 'Components'],
-    views: ['FeedsList', 'NewsDetails', 'FeedListItem'],
+    views: ['FeedsList', 'NewsDetails'],
     stores: ['Feeds'],
     models: ['Entry', 'Feed'],
 
