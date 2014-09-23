@@ -3,7 +3,7 @@ Ext.define('GS.profile.Phone', {
     
     //define any additional classes your Profile needs here
     config: {
-        views: ['Main', 'FeedsList'],
+        views: ['Main', 'FeedsList', 'NewsDetails'],
         controllers: ['NavigationRoute', 'Components', 'FeedsList']
     },
     

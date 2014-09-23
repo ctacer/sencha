@@ -15,8 +15,23 @@ Ext.define('GS.controller.phone.NavigationRoute', {
         control: {
             'phone-mainpanel' : {
                 back: 'backHistory'
+            },
+            'phone-mainpanel button[name="back-to-home-button"]': {
+                tap: 'backToHome'
             }
         }
+    },
+
+    killButton: function (name, method) {
+        method = method || 'destroy';
+        var buttonObj = Ext.ComponentQuery.query('phone-mainpanel button[name="' + name + '"]')[0];
+        buttonObj && buttonObj[method] ();
+    },
+
+    backToHome: function () {
+        var navView = this.getMain();
+        navView.reset();
+        this.redirect('');
     },
 
     showHomePage: function () {        
@@ -39,7 +54,7 @@ Ext.define('GS.controller.phone.NavigationRoute', {
 
     showNewsDetails: function (record) {
         this.getMain().push({
-            xtype: 'newsdetails',
+            xtype: 'phone-newsdetails',
             title: record.data.title,
             data: record.data
         }); 

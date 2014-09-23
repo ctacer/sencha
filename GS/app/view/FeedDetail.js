@@ -14,7 +14,8 @@ Ext.define('GS.view.FeedDetail', {
     plugins: [
       {
         xclass: 'Ext.plugin.ListPaging',
-        autoPaging: true
+        autoPaging: true,
+        loadMoreText: ''
       }
     ],
     disableSelection: true,

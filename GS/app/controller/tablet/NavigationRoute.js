@@ -55,10 +55,21 @@ Ext.define('GS.controller.tablet.NavigationRoute', {
         container.getNavigationBar().setTitle(title);
     },
 
-    tabletBack: function () {
-        var rightContainer = this.getRightContainer();
+    tabletBack: function () {        
+        var rightContainer = this.getRightContainer();        
+
+        var container = rightContainer.getItems();
+        var last = container.items[container.items.length - 1];
+        var ref = last.getData().referenceId;
+
         rightContainer.removeAll();
-        this.setTitle('right', 'Feed News');
+
+        var feedStore = Ext.getStore('Feeds');
+        var feedRecord = feedStore.getById(ref);
+
+        setTimeout(function () {
+            this.redirect('feed/' + feedRecord.data.id);
+        }.bind(this), 400);
     },
 
     showHomePage: function () {
@@ -95,8 +106,6 @@ Ext.define('GS.controller.tablet.NavigationRoute', {
                 title: feedRecord.data.title
             });
             var details = leftContainer.query('feeddetail')[0];
-            /*debugger;
-            details.setActiveItem(1);*/
         }        
 
         rightContainer.push({

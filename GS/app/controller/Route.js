@@ -27,6 +27,10 @@ Ext.define('GS.controller.Route', {
         this.getApplication().getHistory().getActions().pop();
     },
 
+    directRedirect: function (url) {
+        // location.hesh = url;
+    },
+
     backHistory: function () {
 
         var setNewAction = function (actions, record) {
