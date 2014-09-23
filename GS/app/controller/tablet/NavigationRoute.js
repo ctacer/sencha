@@ -17,6 +17,9 @@ Ext.define('GS.controller.tablet.NavigationRoute', {
         },
 
         control: {
+            'tablet-left-container': {
+                back: 'tabletBack'
+            },
             leftContainer: {
                 back: 'backHistory'
             }
@@ -50,6 +53,12 @@ Ext.define('GS.controller.tablet.NavigationRoute', {
         }
 
         container.getNavigationBar().setTitle(title);
+    },
+
+    tabletBack: function () {
+        var rightContainer = this.getRightContainer();
+        rightContainer.removeAll();
+        this.setTitle('right', 'Feed News');
     },
 
     showHomePage: function () {

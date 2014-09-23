@@ -8,6 +8,10 @@
   Ext.define('GS.store.Feeds', {
     extend: 'Ext.data.Store',
 
+    requires: [
+      'Ext.data.JsonP'
+    ],
+
     config: {
       autoLoad: true,
       /*autoSync: true,*/
@@ -21,7 +25,7 @@
      * function builds link to rss feed parser
      */
     buildGoogleFeedParserLink: function (link) {
-      return document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent(link);
+      return document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load';
     },
 
     /**
@@ -77,11 +81,26 @@
         }, null);
     },
 
+    feedExists: function (link) {
+      var exist = false;
+      this.each(function (model) {
+        if (model.data.originalLink == link) {
+          exist = true;
+        }
+      });
+
+      return exist;
+    },
+
     /**
      * function creates new feed by link adress
      */
-    createFeed: function (link, callback) {
+    createFeed: function (link, callback) {     
       callback = callback || function () {};
+
+      if (this.feedExists(link)) {
+        return callback();
+      }
 
       var id = this.createId();
       var self = this;      
@@ -123,10 +142,14 @@
     loadFeedData: function (link, callback) {
       callback = callback || function () {};
 
-      $.ajax({
+      Ext.data.JsonP.request({
         url: this.buildGoogleFeedParserLink(link),
-        dataType: 'json',
-        success: function(data) {
+        params: {
+          v: '1.0',
+          num: 10,
+          q: (link)
+        },
+        success: function (data) {
           if(data && data.responseData && data.responseData.feed) {
             callback(data.responseData.feed);
           }
@@ -134,7 +157,7 @@
             callback();
           }
         },
-        fail: function () {
+        failure: function () {
           callback();
         }
       });
